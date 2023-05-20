@@ -42,7 +42,7 @@ jobs:
         # Decrypt our license file,
         - name: Decrypt the license file
           run: |
-            openssl aes-256-cbc -d -in .github/WebGL_Unity_v2022.x.ulf.enc -k ${{ secrets.UNITY_LICENSE_KEY }} >> .github/Unity_v2022.x.ulf
+            openssl aes-256-cbc -d -in .github/Unity_v2022.x.ulf.enc -k ${{ secrets.UNITY_LICENSE_KEY }} >> .github/Unity_v2022.x.ulf
             ls -al .github
             
         # Debug workspace
