@@ -15,7 +15,7 @@ jobs:
         uses: ./.github/actions/get-license
         id: getManualLicenseFile
 
-      # Send the files on to Dropbox.  
+      # Send the files on to Dropbox. Dropbox token comes from here: https://www.dropbox.com/developers/apps?_tk=pilot_lp&_ad=topbar4&_camp=myapps
       - name: Send license to Dropbox
         uses: ./.github/actions/senddropbox
         id: sendLicense
