@@ -1,12 +1,7 @@
 name: encrypt-license
 
-on:
-  watch:
-    types: [started]
-#on:
-#  push:
-#    branches:
-#      - main
+on: workflow_dispatch
+  
 
 jobs:
   encrypt-license:  
