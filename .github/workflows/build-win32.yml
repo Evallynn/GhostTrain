@@ -102,4 +102,4 @@ jobs:
             SLACK_CHANNEL: builds
           uses: Ilshidur/action-slack@master
           with:
-            args: "Build of GhostTrain - SUCCESS - https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} - Build: https://www.dropbox.com/sh/8dri0ed5kd0juqe/AADq8m4gNnZ0Vlj_H9oMDo5ma?dl=0"
+            args: "Build of GhostTrain - SUCCESS - https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} - Build: https://www.dropbox.com/sh/8cdd5tdobdya1v0/AABdCkbnQhmE-aoDwr40_yCDa?dl=0"
