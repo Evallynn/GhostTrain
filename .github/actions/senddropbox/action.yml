@@ -1,0 +1,21 @@
+name: 'Send Dropbox'
+description: 'Send a file to dropbox'
+inputs:
+  filename:
+    description: 'Path to file to send'
+    required: true
+  token:
+    description: 'Bearer token for dropbox app. Visit here: https://www.dropbox.com/developers/apps/info/m5s80cc0fqsdtbu and generate OAuth2.'
+    required: true
+  project:
+    description: 'Name of the project. Should be same as dropbox folder and root directory of project.'
+outputs:
+  url:
+    description: 'Location in dropbox of the file.'
+runs:
+  using: 'docker'
+  image: './Dockerfile'
+  args:
+    - ${{ inputs.filename }}
+    - ${{ inputs.token }}
+    - ${{ inputs.project }}

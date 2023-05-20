@@ -1,0 +1,22 @@
+name: 'Get Unity License'
+author: 'Luke Staddon'
+description: 'Run Unity in batch to obtain a license file.'
+
+inputs: 
+  secret:
+    required: false
+    description: 'Used to encrypt license'
+    
+outputs:
+  filePath:
+    description: 'Path of the manual activation file'
+  encrypted:
+    description: 'Path of the encrypted file'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  
+branding:
+  icon: 'box'
+  color: 'gray-dark'

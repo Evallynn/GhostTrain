@@ -1,0 +1,105 @@
+name: build-win32
+
+on:
+  watch:
+    types: [started]
+#on:
+#  workflow_dispatch:
+#  push:
+#    branches:
+#      - main
+
+jobs:
+
+  # Reference on how to set this up is here: https://www.youtube.com/watch?v=-txXtAfViEQ
+  build-win32:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '#nobuild')"
+    # TODO: Should build own docker image. Below container from: https://game.ci/docs/docker/docker-images
+    container: unityci/editor:2022.2.19f1-windows-mono-1.1
+    steps:
+        # Check out the project.
+        - name: Checkout Project
+          uses: actions/checkout@v1
+          
+        # TODO - Just being lazy here, should really build custom Docker images.
+        # Install Zip.
+        - name: Install Zip
+          run: |
+            apt-get update && \
+            apt-get install zip --assume-yes    
+            
+        # Install GIT.
+        - name: Install GIT
+          run: |
+            apt-get update && \
+            apt-get install git --assume-yes
+            
+        # Decrypt our license file,
+        - name: Decrypt the license file
+          run: |
+            openssl aes-256-cbc -d -in .github/Win32_Unity_v2021.x.ulf.enc -k ${{ secrets.UNITY_LICENSE_KEY }} >> .github/Unity_v2022.x.ulf
+            ls -al .github
+            
+        # Debug workspace
+        - name: Debug Workspace
+          run: |
+            echo 'opt'
+            cd /opt
+            pwd
+            ls -al
+            echo 'opt unity'
+            cd /opt/unity
+            pwd
+            ls -al
+            echo 'opt unity Editor'
+            cd /opt/unity/Editor
+            pwd
+            ls -al
+        
+        # Activate unity
+        - name: Activate Unity
+          run: /opt/unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -logFile -manualLicenseFile .github/Unity_v2022.x.ulf || exit 0
+        
+        # Update build number
+        - name: Update build number
+          run: sed -i "s/UNITY_GAME_BUILD_VERSION = \"1.0\"/UNITY_GAME_BUILD_VERSION = \"1.0.${{ github.run_number }}\"/g" ./GhostTrain/Assets/Editor/BuildInfo.cs
+        
+        # Build windows (native build).
+        #- name: Build Windows Player
+        #  run: /opt/Unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -noUpm -logFile -projectPath ./GhostTrain -buildWindows64Player $GITHUB_WORKSPACE/GhostTrain/GhostTrain/GhostTrain-PC.exe
+        
+        # Build windows (build pipeline, required for asset bundles).
+        - name: Build Windows Player
+          run: /opt/unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -logFile -projectPath ./GhostTrain -buildTarget Win -executeMethod BuildAssetBundles.PerformWin64Build -buildDir $GITHUB_WORKSPACE/GhostTrain
+          
+        # Zip up the Win64 build.
+        - name: Zip Windows Build
+          run: |
+            ls -al $GITHUB_WORKSPACE
+            cd $GITHUB_WORKSPACE
+            pwd
+            ls -al $GITHUB_WORKSPACE/GhostTrain
+            ls -al $GITHUB_WORKSPACE/GhostTrain/GhostTrain-PC
+            cd $GITHUB_WORKSPACE/GhostTrain/GhostTrain-PC
+            pwd
+            ls -al
+            zip -r $GITHUB_WORKSPACE/GhostTrain-PC.zip ./
+          
+        # Send the Win64 zip on to Dropbox.  
+        - name: Send Windows Build to Dropbox
+          uses: ./.github/actions/senddropbox
+          id: sendfile-win64
+          with:
+            filename: 'GhostTrain-PC.zip'
+            token: ${{ secrets.DROPBOX_TOKEN }}
+            project: GhostTrain
+            
+        # Send a notification to Slack. Go here to obtain webhook: https://api.slack.com/apps/A013E8U2BHA/incoming-webhooks?
+        - name: Notify in Slack
+          env:
+            SLACK_WEBHOOK: ${{ secrets.SLACK_BUILD_WEBHOOK }}
+            SLACK_CHANNEL: builds
+          uses: Ilshidur/action-slack@master
+          with:
+            args: "Build of GhostTrain - SUCCESS - https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} - Build: https://www.dropbox.com/sh/8dri0ed5kd0juqe/AADq8m4gNnZ0Vlj_H9oMDo5ma?dl=0"

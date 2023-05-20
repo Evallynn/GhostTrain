@@ -1,0 +1,35 @@
+name: encrypt-license
+
+on:
+  watch:
+    types: [started]
+#on:
+#  push:
+#    branches:
+#      - main
+
+jobs:
+  encrypt-license:  
+    name: "Encrypt License"
+    runs-on: ubuntu-latest
+    
+    steps:
+        - name: "Checkout Code"
+          uses: actions/checkout@v2
+        
+        # Encrypt the license file
+        - name: "Encrypt License"
+          id: encryptLicense
+          run: |
+            cd ./.github
+            openssl aes-256-cbc -e -in ./Unity_v2022.x.ulf -out ./Unity_v2022.x.ulf.enc -k ${{ secrets.UNITY_LICENSE_KEY }}
+            ls -al
+            
+        # Send the files on to Dropbox.  
+        - name: Send license to Dropbox
+          uses: ./.github/actions/senddropbox
+          id: sendLicense
+          with:
+            filename: .github/Unity_v2022.x.ulf.enc
+            token: ${{ secrets.DROPBOX_TOKEN }}
+            project: GhostTrain

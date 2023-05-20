@@ -1,0 +1,30 @@
+name: generate-license
+
+on:
+  watch:
+    types: [started]
+#on:
+#  push:
+#    branches:
+#      - main
+      
+jobs:
+  requestActivationFile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+       
+      # Generate the license.
+      - name: Request manual activation file
+        uses: ./.github/actions/get-license
+        id: getManualLicenseFile
+
+      # Send the files on to Dropbox.  
+      - name: Send license to Dropbox
+        uses: ./.github/actions/senddropbox
+        id: sendLicense
+        with:
+          filename: ${{ steps.getManualLicenseFile.outputs.license }}
+          token: ${{ secrets.DROPBOX_TOKEN }}
+          project: GhostTrain
