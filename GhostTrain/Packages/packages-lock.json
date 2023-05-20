@@ -244,7 +244,7 @@
       "url": "https://packages.unity.com"
     },
     "com.xmpt.core": {
-      "version": "https://4746e10d575bd6d2de22c2b7c7ea2a60782a59b0@github.com/Evallynn/Xmpt-Core.git",
+      "version": "https://github.com/Evallynn/Xmpt-Core.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
