@@ -39,7 +39,10 @@ public class BuildAssetBundles {
             "Assets/Scenes/Splash.unity",
             "Assets/Scenes/MainMenu.unity"
         };
-        BuildReport report = BuildPipeline.BuildPlayer(levels, args[ARG_BUILD_DIR] + "/" + buildName + "/" + exeName, target, BuildOptions.Development);
+
+        string buildPath = $"{args[ARG_BUILD_DIR]}/{buildName}/{exeName}";
+        Debug.Log($"Building to path '{buildPath}'");
+        BuildReport report = BuildPipeline.BuildPlayer(levels, buildPath, target, BuildOptions.Development);
 
 
         // Print the result.
