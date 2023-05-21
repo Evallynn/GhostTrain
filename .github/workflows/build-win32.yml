@@ -67,9 +67,12 @@ jobs:
         #- name: Build Windows Player
         #  run: /opt/Unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -noUpm -logFile -projectPath ./GhostTrain -buildWindows64Player $GITHUB_WORKSPACE/GhostTrain/GhostTrain/GhostTrain-PC.exe
         
-        # Check CLI works.
-        - name: Check GitHub CLI
-          run: gh help auth
+        # Log in to GitHub, to allow access to shared packages. GIT_CREDENTIALS should use format: https://$username:$token@github.com/
+        - name: setup-git-credentials
+          uses: de-vri-es/setup-git-credentials@v2.0.10
+          with:
+            credentials: ${{ secrets.GIT_CREDENTIALS }}
+
         
         # Build windows (build pipeline, required for asset bundles).
         - name: Build Windows Player
