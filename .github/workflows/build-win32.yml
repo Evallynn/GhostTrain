@@ -67,10 +67,12 @@ jobs:
         #- name: Build Windows Player
         #  run: /opt/Unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -noUpm -logFile -projectPath ./GhostTrain -buildWindows64Player $GITHUB_WORKSPACE/GhostTrain/GhostTrain/GhostTrain-PC.exe
         
+        # Check CLI works.
+        - name: Check GitHub CLI
+          run: gh help auth
+        
         # Build windows (build pipeline, required for asset bundles).
         - name: Build Windows Player
-          env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: /opt/unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -logFile -projectPath ./GhostTrain -buildTarget Win -executeMethod BuildAssetBundles.PerformWin64Build -buildDir $GITHUB_WORKSPACE/GhostTrain
           
         # Zip up the Win64 build.
