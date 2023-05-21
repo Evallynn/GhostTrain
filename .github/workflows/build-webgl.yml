@@ -65,6 +65,12 @@ jobs:
         - name: Activate Unity
           run: /opt/unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -logFile -manualLicenseFile .github/Unity_v2022.x.ulf || exit 0
           
+        # Log in to GitHub, to allow access to shared packages. GIT_CREDENTIALS should use format: https://$username:$token@github.com/
+        - name: setup-git-credentials
+          uses: de-vri-es/setup-git-credentials@v2.0.10
+          with:
+            credentials: ${{ secrets.GIT_CREDENTIALS }}
+          
         # Update build number
         - name: Update build number
           run: sed -i "s/UNITY_GAME_BUILD_VERSION = \"1.0\"/UNITY_GAME_BUILD_VERSION = \"1.0.${{ github.run_number }}\"/g" ./GhostTrain/Assets/Resources/Scripts/BuildNumber.cs
@@ -81,7 +87,7 @@ jobs:
             ls -al
             zip -r $GITHUB_WORKSPACE/GhostTrain-WebGL.zip ./
             
-        # Send the WebGL zip on to Dropbox.  
+        # Send the WebGL zip on to Dropbox. Go here: https://www.dropbox.com/developers/apps/info/m5s80cc0fqsdtbu
         - name: Send WebGL Build to Dropbox
           uses: ./.github/actions/senddropbox
           id: sendfile-webgl

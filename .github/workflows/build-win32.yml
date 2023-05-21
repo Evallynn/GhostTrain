@@ -91,7 +91,7 @@ jobs:
             ls -al
             zip -r $GITHUB_WORKSPACE/GhostTrain-PC.zip ./
           
-        # Send the Win64 zip on to Dropbox.  
+        # Send the Win64 zip on to Dropbox.  Go here: https://www.dropbox.com/developers/apps/info/m5s80cc0fqsdtbu
         - name: Send Windows Build to Dropbox
           uses: ./.github/actions/senddropbox
           id: sendfile-win64
