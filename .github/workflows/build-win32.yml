@@ -6,6 +6,7 @@ on:
     branches:
       - main
 
+
 jobs:
 
   # Reference on how to set this up is here: https://www.youtube.com/watch?v=-txXtAfViEQ
@@ -68,6 +69,8 @@ jobs:
         
         # Build windows (build pipeline, required for asset bundles).
         - name: Build Windows Player
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: /opt/unity/Editor/Unity -quit -batchmode -nographics -silent-crashes -logFile -projectPath ./GhostTrain -buildTarget Win -executeMethod BuildAssetBundles.PerformWin64Build -buildDir $GITHUB_WORKSPACE/GhostTrain
           
         # Zip up the Win64 build.
