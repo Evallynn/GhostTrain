@@ -35,7 +35,10 @@ public class BuildAssetBundles {
         //AddressableAssetSettings.BuildPlayerContent();
 
         // Main player. 
-        string[] levels = new string[] { "Assets/Scenes/Splash.unity" };
+        string[] levels = new string[] {
+            "Assets/Scenes/Splash.unity",
+            "Assets/Scenes/MainMenu.unity"
+        };
         BuildReport report = BuildPipeline.BuildPlayer(levels, args[ARG_BUILD_DIR] + "/" + buildName + "/" + exeName, target, BuildOptions.Development);
 
 
