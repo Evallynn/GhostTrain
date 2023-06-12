@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eaa2da32ffe7d04a9400d7b4e48355b, type: 3}
+  m_Name: RailNetworkGenerator_v1
+  m_EditorClassIdentifier: 
+  _minStations: 5
+  _maxStations: 10
+  _minGhostStations: 1
+  _maxGhostStations: 1
+  _minConnectionsToHome: 2
+  _maxConnectionsToHome: 5
+  _maxConnectionsPerStation: 4
+  _maxConnectionDepth: 4
+  _minLinkDistance: 1
+  _maxLinkDistance: 4

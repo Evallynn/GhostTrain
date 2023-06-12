@@ -24,6 +24,7 @@ MonoBehaviour:
   - New
   - Old
   - Greater
+  - Little
   _openers:
   - Liver
   - Mar
@@ -135,6 +136,7 @@ MonoBehaviour:
   - Will
   - Wool
   - Cock
+  - Bon
   _padders:
   - Ham
   - Ing
