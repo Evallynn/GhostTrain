@@ -10,8 +10,10 @@ public class RailNetworkPlotter {
     //***
     public IEnumerable<KeyValuePair<StationModel, Vector2>> Positions => this._positions;
     public int TotalPositions => this._positions.Count;
-    public float MinConnectionLength { get; set; }
-    public float MaxConnectionLength { get; set; }
+    public float MinConnectionDistance { get; set; }
+    public float ConnectionVariance { get; set; }
+    public float RotationalVariancePercentage { get; set; } = 0.2f;
+    public float NetworkScale { get; set; } = 1.0f;
     public StationModel Home => this._network?.Home;
 
 
@@ -25,9 +27,9 @@ public class RailNetworkPlotter {
     //***
     //*** Constructors.
     //***
-    public RailNetworkPlotter(float minConnectionLength, float maxConnectionLength) {
-        this.MinConnectionLength = minConnectionLength;
-        this.MaxConnectionLength = maxConnectionLength;
+    public RailNetworkPlotter(float minConnectionDistance, float connectionVariance) {
+        this.MinConnectionDistance = minConnectionDistance;
+        this.ConnectionVariance = connectionVariance;
     }
 
 
@@ -62,8 +64,9 @@ public class RailNetworkPlotter {
 
         foreach (StationLinkModel link in parent.Links) {
             StationModel child = link.GetOpposite(parent);
-            float angle = i * segmentSize;
-            Vector2 newPos = this.CalculatePosition(parentPos, angle, 2.0f);
+            float angleVariance = Random.Range(-(360.0f * this.RotationalVariancePercentage), 360.0f * this.RotationalVariancePercentage);
+            float angle = (i * segmentSize) + angleVariance;
+            Vector2 newPos = this.CalculatePosition(parentPos, angle, link.Distance / this.MinConnectionDistance);
 
             this._positions.Add(child, newPos);
             this.GenerateChildPositions(child, parent, newPos, parentPos, 90.0f);
@@ -86,21 +89,22 @@ public class RailNetworkPlotter {
             StationModel child = link.GetOpposite(parent);
             if (child == grandparent) continue;
 
-            float angle = startAngle + (i * segmentSize);
-            Vector2 newPos = this.CalculatePosition(parentPos, angle, 1.0f);
+            float angleVariance = Random.Range(-(radius * this.RotationalVariancePercentage), radius * this.RotationalVariancePercentage);
+            float angle = startAngle + angleVariance + (i * segmentSize);
+            Vector2 newPos = this.CalculatePosition(parentPos, angle, link.Distance / this.MinConnectionDistance);
 
             this._positions.Add(child, newPos);
-            this.GenerateChildPositions(child, parent, newPos, parentPos, radius / Mathf.Max(1.0f, parent.TotalLinks - 1));
+            this.GenerateChildPositions(child, parent, newPos, parentPos, (radius * 1.1f) / Mathf.Max(1.0f, parent.TotalLinks - 1));
             i++;
         }
     }
 
 
-    private Vector2 CalculatePosition(Vector2 from, float angle, float scale) {
-        float distance = Random.Range(this.MinConnectionLength, this.MaxConnectionLength) * scale;
+    private Vector2 CalculatePosition(Vector2 from, float angle, float distance) {
+        float length = Random.Range(distance - this.ConnectionVariance, distance + this.ConnectionVariance) * this.NetworkScale;
 
-        var x = distance * Mathf.Cos(angle * Mathf.Deg2Rad);
-        var y = distance * Mathf.Sin(angle * Mathf.Deg2Rad);
+        var x = length * Mathf.Cos(angle * Mathf.Deg2Rad);
+        var y = length * Mathf.Sin(angle * Mathf.Deg2Rad);
 
         return new(from.x + x, from.y + y);
     }

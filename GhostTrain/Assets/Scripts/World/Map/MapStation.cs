@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public interface IMapStation {
     public string StationName { get; set; }
     public GameObject GameObject { get; }
+    public Color Colour { get; set; }
 }
 
 
@@ -19,6 +20,11 @@ public class MapStation : MonoBehaviour, IMapStation {
     }
 
     public GameObject GameObject => this.gameObject;
+
+    public Color Colour {
+        get => this._image.color;
+        set => this._image.color = value;
+    }
 
 
     //***

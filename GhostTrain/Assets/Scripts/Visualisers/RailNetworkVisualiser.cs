@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Xmpt.Core.Events;
+
 
 public class RailNetworkVisualiser : MonoBehaviour {
     //***
     //*** Class properties.
     //***
-    [field: SerializeField, Min(0.001f)] public float MinConnectionLength { get; set; } = 1.0f;
-    [field: SerializeField, Min(0.001f)] public float MaxConnectionLength { get; set; } = 1.0f;
+    [field: SerializeField, Min(0.0f)] public float ConnectionVariance { get; set; } = 0.0f;
+    [field: SerializeField, Range(0.0f, 1.0f)] public float RotationalVariance { get; set; } = 0.0f;
+    [field: SerializeField, Min(0.001f)] public float NetworkScale { get; set; } = 1.0f;
 
 
     //***
@@ -30,7 +31,12 @@ public class RailNetworkVisualiser : MonoBehaviour {
     //***
     private void Awake() {
         CheckEditorInputs();
-        this._plotter = new(this.MinConnectionLength, this.MaxConnectionLength);
+
+        this._plotter = new(this._generator.MinLinkDistance, this.ConnectionVariance) {
+            NetworkScale = this.NetworkScale,
+            RotationalVariancePercentage = this.RotationalVariance
+        };
+
         this.GenerateMap();
     }
 
@@ -58,6 +64,7 @@ public class RailNetworkVisualiser : MonoBehaviour {
         this._plotter.ApplyNetwork(this._network, true);
 
         this.GenerateStation(this._plotter.Home);
+        this._stations[this._plotter.Home].Colour = Color.red;
     }
 
     private void GenerateStation(StationModel model) {
@@ -83,7 +90,7 @@ public class RailNetworkVisualiser : MonoBehaviour {
 
         transform.SetParent(this.transform);
         transform.localScale = Vector3.one;
-        transform.localPosition = position;
+        transform.position = position;
 
         station.StationName = data.Name;
         return station;

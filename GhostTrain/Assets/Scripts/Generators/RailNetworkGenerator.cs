@@ -17,8 +17,8 @@ public class RailNetworkGenerator : ScriptableObject {
     [SerializeField, Min(2)] private int _maxConnectionsToHome = 5;
     [SerializeField, Min(1)] private int _maxConnectionsPerStation = 4;
     [SerializeField, Min(2)] private int _maxConnectionDepth = 5;
-    [SerializeField, Min(1)] private int _minLinkDistance = 15;
-    [SerializeField, Min(1)] private int _maxLinkDistance = 60;
+    [field: SerializeField, Min(1)] public int MinLinkDistance { get; private set; } = 15;
+    [field: SerializeField, Min(1)] public int MaxLinkDistance { get; private set; } = 60;
 
 
     //***
@@ -57,7 +57,7 @@ public class RailNetworkGenerator : ScriptableObject {
             StationLinkModel link = this.GenerateLink(from, to);
             from.AddConnectedStation(link);
 
-            Debug.Log($"{from.Name} --> {to.Name}: {link.Distance * 15} minutes.");
+            Debug.Log($"{from.Name} --> {to.Name}: {link.Distance} minutes.");
             network.AddStation(to);
 
             this.GenerateStations(to, ref network, depth + 1, 0, this._maxConnectionsPerStation);
@@ -68,7 +68,7 @@ public class RailNetworkGenerator : ScriptableObject {
     private static StationModel GenerateStation() => new (StationGenerator.Inst.Generate());
 
     private StationLinkModel GenerateLink(StationModel from, StationModel to) {
-        int distance = Random.Range(this._minLinkDistance, this._maxLinkDistance + 1);
+        int distance = Random.Range(this.MinLinkDistance, this.MaxLinkDistance + 1);
         return new(from, to, distance);
     }
 }

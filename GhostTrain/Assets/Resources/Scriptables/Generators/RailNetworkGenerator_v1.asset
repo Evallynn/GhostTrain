@@ -16,9 +16,9 @@ MonoBehaviour:
   _maxStations: 10
   _minGhostStations: 1
   _maxGhostStations: 1
-  _minConnectionsToHome: 4
-  _maxConnectionsToHome: 4
-  _maxConnectionsPerStation: 1
+  _minConnectionsToHome: 2
+  _maxConnectionsToHome: 6
+  _maxConnectionsPerStation: 2
   _maxConnectionDepth: 4
-  _minLinkDistance: 1
-  _maxLinkDistance: 4
+  <MinLinkDistance>k__BackingField: 15
+  <MaxLinkDistance>k__BackingField: 60
