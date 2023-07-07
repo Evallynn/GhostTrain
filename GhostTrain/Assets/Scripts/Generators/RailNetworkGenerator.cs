@@ -29,7 +29,7 @@ public class RailNetworkGenerator : ScriptableObject {
         RailNetworkModel network = new();
 
         StationModel home = GenerateStation();
-        network.AddStation(home);
+        network.AddHomeStation(home);
         Debug.Log($"Home: {home.Name} ({home.Id})");
 
        this.GenerateStations(home, ref network, 1, this._minConnectionsToHome, this._maxConnectionsToHome);

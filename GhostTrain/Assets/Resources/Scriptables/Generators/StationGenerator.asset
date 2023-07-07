@@ -228,6 +228,11 @@ MonoBehaviour:
   - Heath
   - Moor
   - on Sea
+  - Common
+  - Brook
+  - Green
+  - Sands
+  - Gate
   _prefixChance: 0.35
   _postfixChance: 0.35
   _padChance: 0.3
