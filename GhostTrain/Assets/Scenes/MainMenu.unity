@@ -1255,6 +1255,6 @@ MonoBehaviour:
   <ConnectionVariance>k__BackingField: 0.25
   <RotationalVariance>k__BackingField: 0.203
   <NetworkScale>k__BackingField: 0.65
-  _stationPrefab: {fileID: 6917381937093167447, guid: cd961d30e0344f84ca8bba555b675992, type: 3}
+  _stationPrefab: {fileID: 6917381937093167447, guid: b1804cf3624a843428cfdeb5a4bc9d08, type: 3}
   _linePrefab: {fileID: 7533876790217697857, guid: 85e08c751abcf3241a3c7ede19b7b76d, type: 3}
   _generator: {fileID: 11400000, guid: ca6fa5b3ff54be940bff7c92f0098134, type: 2}

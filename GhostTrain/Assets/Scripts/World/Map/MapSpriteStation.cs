@@ -1,16 +1,8 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 
-public interface IMapStation {
-    public string StationName { get; set; }
-    public GameObject GameObject { get; }
-    public Color Colour { get; set; }
-}
-
-
-public class MapStation : MonoBehaviour, IMapStation {
+public class MapSpriteStation : MonoBehaviour, IMapStation {
     //***
     //*** Class properties.
     //***
@@ -31,7 +23,7 @@ public class MapStation : MonoBehaviour, IMapStation {
     //*** Class-internal variables.
     //***
     private TMP_Text _label;
-    private Image _image;
+    private SpriteRenderer _image;
 
 
     //***
@@ -39,6 +31,6 @@ public class MapStation : MonoBehaviour, IMapStation {
     //***
     private void Awake() {
         this._label = this.GetComponentInChildren<TMP_Text>();
-        this._image = this.GetComponent<Image>();
+        this._image = this.GetComponentInChildren<SpriteRenderer>();
     }
 }
